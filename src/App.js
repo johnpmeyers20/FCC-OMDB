@@ -7,10 +7,10 @@ import SearchBox from './components/SearchBox';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
-  const [searchValue, setSearchValue] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
-  const getMovieRequest = async () => {
-    const url = 'http://www.omdbapi.com/?apikey=1f020500&s=star wars';
+  const getMovieRequest = async(searchValue) => {
+    const url = `http://www.omdbapi.com/?apikey=1f020500&s=${searchValue}`;
     const res = await fetch(url);
     const resJson = await res.json();
 
@@ -20,8 +20,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    getMovieRequest();
-  }, []);
+    getMovieRequest(searchValue);
+  }, [searchValue]);
 
   return (
     <div className="container-fluid fcc-omdb">
