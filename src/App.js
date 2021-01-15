@@ -5,6 +5,7 @@ import MovieList from './components/MovieList';
 import MovieListHeading from './components/MovieListHeading';
 import SearchBox from './components/SearchBox';
 import AddToFavorites from './components/AddToFavorites';
+import RemoveFromFavorites from './components/RemoveFromFavorites';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -21,15 +22,33 @@ const App = () => {
     }
   };
 
-  const addFavoriteMovie = (movie) => {
-    const newFavoriteList = [...favorites, movie];
-    setFavorites(newFavoriteList);
-    console.log(favorites);
-  };
-
   useEffect(() => {
     getMovieRequest(searchValue);
   }, [searchValue]);
+
+  useEffect(() => {
+    const movieFavorites = JSON.parse(localStorage.getItem('react-movie-app-favorites'));
+    
+    setFavorites(movieFavorites);
+  }, []);
+
+  const saveToLocalStorage = (items) => {
+    localStorage.setItem('react-movie-app-favorites', JSON.stringify(items));
+  };
+
+  const addFavoriteMovie = (movie) => {
+    const newFavoriteList = [...favorites, movie];
+    setFavorites(newFavoriteList);
+    saveToLocalStorage(newFavoriteList);
+  };
+
+  const removeFavoriteMovie = (movie) => {
+    const newFavoriteList = favorites.filter((favorite) => favorite.imdbID !== movie.imdbID);
+    setFavorites(newFavoriteList);
+    saveToLocalStorage(newFavoriteList);
+  }
+
+
 
   return (
     <div className="container-fluid fcc-omdb">
@@ -52,7 +71,7 @@ const App = () => {
       </div>
 
       <div className="row">
-        <MovieList movies={favorites} favoriteComponent={AddToFavorites} />
+        <MovieList movies={favorites} handleFavoritesClick={removeFavoriteMovie} favoriteComponent={RemoveFromFavorites} />
       </div>
     </div>
   );
