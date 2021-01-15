@@ -33,19 +33,26 @@ const App = () => {
 
   return (
     <div className="container-fluid fcc-omdb">
-      <div className="row">
-        <MovieListHeading heading='Movies' />
-        <SearchBox
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
+
+      <div className="row d-flex align-items-center mt-4 mb-4">
+        <MovieListHeading heading="Movies" />
+        <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
       </div>
+
       <div className="row">
         <MovieList
           movies={movies}
           favoriteComponent={AddToFavorites}
           handleFavoritesClick={addFavoriteMovie}
         />
+      </div>
+
+      <div className="row d-flex align-items-center mt-4 mb-4">
+        <MovieListHeading heading="Favorites" />
+      </div>
+
+      <div className="row">
+        <MovieList movies={favorites} favoriteComponent={AddToFavorites} />
       </div>
     </div>
   );
