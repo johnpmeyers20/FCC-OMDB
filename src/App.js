@@ -9,13 +9,15 @@ import RemoveFromFavorites from './components/RemoveFromFavorites';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
   const [favorites, setFavorites] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
 
-  const getMovieRequest = async(searchValue) => {
+  const getMovieRequest = async (searchValue) => {
     const url = `http://www.omdbapi.com/?apikey=1f020500&s=${searchValue}`;
     const res = await fetch(url);
     const resJson = await res.json();
+
+    console.log("We're here now!");
 
     if (resJson.Search) {
       setMovies(resJson.Search);
@@ -27,14 +29,14 @@ const App = () => {
   }, [searchValue]);
 
   useEffect(() => {
-    const movieFavorites = JSON.parse(localStorage.getItem('react-movie-app-favorites'));
-    
-    setFavorites(movieFavorites);
+    const favoriteMovies = JSON.parse(localStorage.getItem('react-movie-app-favorites'));
+    setFavorites(favoriteMovies);
+    // setFavorites(JSON.parse(localStorage.getItem('react-movie-app-favorites')));
   }, []);
 
   const saveToLocalStorage = (items) => {
     localStorage.setItem('react-movie-app-favorites', JSON.stringify(items));
-  };
+  }
 
   const addFavoriteMovie = (movie) => {
     const newFavoriteList = [...favorites, movie];
@@ -47,8 +49,6 @@ const App = () => {
     setFavorites(newFavoriteList);
     saveToLocalStorage(newFavoriteList);
   }
-
-
 
   return (
     <div className="container-fluid fcc-omdb">
